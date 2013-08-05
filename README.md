@@ -42,11 +42,11 @@ Create a Client object to start working.
 
 The following options can be used in the constructor:
 
-**socket**: String, the path of the unix socket to connect to, default to /var/run/gibson.sock.
-**address**: String, the tcp address to connect to, setting this option will exclude the :socket option, default to nil.
-**port**: Integer, the tcp port of Gibson instance, default to 10128.
-**timeout**: Integer, timeout in milliseconds for socket I/O, default to 100.
-**keepalive**: Boolean, true to set SO_KEEPALIVE option on the tcp socket, default true.
+* **socket**: String, the path of the unix socket to connect to, default to /var/run/gibson.sock.
+* **address**: String, the tcp address to connect to, setting this option will exclude the :socket option, default to nil.
+* **port**: Integer, the tcp port of Gibson instance, default to 10128.
+* **timeout**: Integer, timeout in milliseconds for socket I/O, default to 100.
+* **keepalive**: Boolean, true to set SO_KEEPALIVE option on the tcp socket, default true.
 
 Tcp connection example:
 
@@ -61,11 +61,11 @@ Runtime Errors
 
 Every Gibson protocol error is mapped to a RuntimeError derived class.
 
-    class GenericError < RuntimeError; end
-    class NotFoundError < RuntimeError; end
-    class NaNError < RuntimeError; end
-    class OutOfMemoryError < RuntimeError; end
-    class LockedError < RuntimeError; end
+* **GenericError** Generic protocol error.
+* **NotFoundError** Key or prefix not found.
+* **NaNError** The object is not a number.
+* **OutOfMemoryError** Server is out of memory.
+* **LockedError** Object is locked.
 
 Methods
 -------
@@ -100,5 +100,6 @@ License
 Released under the BSD license.  
 Copyright &copy; 2013, Simone Margaritelli 
 <evilsocket@gmail.com>  
+
 <http://www.evilsocket.net/>
 All rights reserved.
