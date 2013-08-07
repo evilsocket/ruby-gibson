@@ -46,7 +46,7 @@ module Gibson
             # number
             elsif encoding == Protocol::ENCODINGS[:number]
                 # 32 bit integer ?
-                if size == 4:
+                if size == 4
                     data.unpack( 'l<' )[0]
                 else
                     data.unpack( 'q<' )[0]
@@ -61,7 +61,7 @@ module Gibson
             count, data  = data.unpack( 'L<a' + left.to_s )
             obj = {}
 
-            count.times { |i|
+            count.times do |i|
                 left -= 4
                 klen, data = data.unpack( 'L<a' + left.to_s )
 
@@ -78,7 +78,7 @@ module Gibson
                 value, data = data.unpack( 'a' + vsize.to_s + 'a' + left.to_s )
 
                 obj[key] = decode Protocol::REPLIES[:val], enc, vsize, value
-            }
+            end
 
             obj
         end
@@ -86,10 +86,13 @@ module Gibson
         def decode( code, encoding, size, data )
             if code == Protocol::REPLIES[:val]
                 decode_val encoding, size, data
+
             elsif code == Protocol::REPLIES[:kval]
                 decode_kval data, size
+
             elsif code == Protocol::REPLIES[:ok]
                 true
+
             elsif Protocol.error? code
                 raise Protocol::ERRORS[code]
 
