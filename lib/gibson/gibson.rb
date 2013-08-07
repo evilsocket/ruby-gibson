@@ -29,16 +29,23 @@ require 'gibson/connection'
 
 module Gibson
     class Client
+        ##
+        # Create a new Gibson::Client instance, the options are passed to
+        # Gibson::Connection initialize method.
         def initialize(opts = {})
             @connection = nil
             @options = opts
         end
 
+        ##
+        # Create the connection.
         def connect
             @connection = Connection.new( @options )
             @connection.connect
         end
 
+        ##
+        # Decode a REPL_VAL reply.
         def decode_val( encoding, size, data )
             # plain string
             if encoding == Protocol::ENCODINGS[:plain]
@@ -56,6 +63,8 @@ module Gibson
             end
         end
 
+        ##
+        # Decode a REPL_KVAL reply.
         def decode_kval( data, size )
             left = size - 4
             count, data  = data.unpack( 'L<a' + left.to_s )
@@ -83,6 +92,8 @@ module Gibson
             obj
         end
 
+        ##
+        # Reply decoding wrapper.
         def decode( code, encoding, size, data )
             if code == Protocol::REPLIES[:val]
                 decode_val encoding, size, data
@@ -101,6 +112,10 @@ module Gibson
             end
         end
 
+        ##
+        # Send a query to the server given its opcode and arguments payload.
+        # Return the decoded data, or raise one of the RuntimeErrors defined 
+        # inside Gibson::Protocol.
         def query( opcode, payload = '' )
             connect if @connection == nil or not @connection.connected?
 
@@ -115,10 +130,21 @@ module Gibson
             decode code, encoding, size, data
         end
 
+        ##
+        # This method will be called for every undefined method call
+        # of Gibson::Client mapping the method to its opcode and creating
+        # its argument payload.
+        # For instance a call to:
+        #   client = Gibson::Client.new
+        #   client.set 0, 'foo', 'bar'
+        # Will be executed as:
+        #   client.query Protocol::COMMANDS[:set], '0 foo bar'
         def method_missing(name, *arguments)
             if Protocol::COMMANDS.has_key? name 
                 query Protocol::COMMANDS[name], arguments.join(' ')
             end
         end
+
+        private :decode_val, :decode_kval, :decode
     end
 end

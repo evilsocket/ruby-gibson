@@ -25,13 +25,19 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 module Gibson
+    # A generic protocol error.
     class GenericError < RuntimeError; end
+    # Key or prefix not found.
     class NotFoundError < RuntimeError; end
+    # Specified value is not a number.
     class NaNError < RuntimeError; end
+    # The server is out of memory.
     class OutOfMemoryError < RuntimeError; end
+    # The object is locked and can't be modified.
     class LockedError < RuntimeError; end
 
     class Protocol
+        # Query opcodes.
         COMMANDS = {
             :set     => 1,
             :ttl     => 2,
@@ -57,6 +63,7 @@ module Gibson
             :end     => 0xff
         }
 
+        # Server replies opcodes.
         REPLIES = {
             :error 	   => 0, # Generic error
             :not_found => 1, # Key/Prefix not found
@@ -68,6 +75,7 @@ module Gibson
             :kval	   => 7  # Ok, [ key => value, ... ] follows
         }
 
+        # Error code to exception map.
         ERRORS = {
             0 => GenericError,
             1 => NotFoundError,
@@ -76,12 +84,18 @@ module Gibson
             4 => LockedError
         }
 
+        # Incoming data encodings.
         ENCODINGS = {
-            :plain  => 0x00, # the item is in plain encoding and data points to its buffer
-            :lzf    => 0x01, # PLAIN but compressed data with lzf
-            :number => 0x02  # the item contains a number and data pointer is actually that number
+            # the item is in plain encoding and data points to its buffer
+            :plain  => 0x00, 
+            # PLAIN but compressed data with lzf
+            :lzf    => 0x01, 
+            # the item contains a number and data pointer is actually that number
+            :number => 0x02 
         }
 
+        ##
+        # Return true if the specified code is an error code, otherwise false.
         def self.error? (code)
             code >= REPLIES[:error] && code <= REPLIES[:locked]
         end
