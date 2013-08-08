@@ -1,4 +1,4 @@
-Ruby Gibson client
+Ruby Gibson client [![Gem Version](https://badge.fury.io/rb/gibson.png)](http://badge.fury.io/rb/gibson)
 ========================
 
 A pure Ruby Gibson client library.
