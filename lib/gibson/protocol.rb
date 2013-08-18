@@ -50,13 +50,13 @@ module Gibson
     }
 
     # Error code to exception map.
-    ERRORS = {
-      0 => GenericError,
-      1 => NotFoundError,
-      2 => NaNError,
-      3 => OutOfMemoryError,
-      4 => LockedError
-    }
+    ERRORS = [
+      GenericError,
+      NotFoundError,
+      NaNError,
+      OutOfMemoryError,
+      LockedError
+    ]
 
     # Incoming data encodings.
     ENCODINGS = {

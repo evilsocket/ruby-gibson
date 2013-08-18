@@ -14,22 +14,32 @@ end
 
 module Gibson
   class Client
-    ##
     # Create a new Gibson::Client instance, the options are passed to
     # Gibson::Connection initialize method.
+    # 
+    # ==== Examples:
+    #
+    #   Gibson::Client.new                         # will create a connection to the default /var/run/gibson.sock UNIX socket.
+    #   Gibson::Client.new :address => '127.0.0.1' # will connect to localhost:10128
+    #
+    # ==== Options:
+    # 
+    # - :socket - The UNIX socket path, if this option is set a UNIX socket connection will be used. Default: /var/run/gibson.sock
+    # - :address - The ip address to connect to, if this option is set a TCP socket connection will be used. Default: nil
+    # - :port - The tcp port to connect to. Default: 10128
+    # - :timeout - The connection and I/O timeout in milliseconds. Default: 100
+    # - :keepalive - If a TCP connection will be used, set this to true to use the SO_KEEPALIVE flag on the socket. Default: false
     def initialize(opts = {})
       @connection = nil
       @options = opts
     end
 
-    ##
     # Create the connection.
     def connect
       @connection = Connection.new( @options )
       @connection.connect
     end
 
-    ##
     # Decode a REPL_VAL reply.
     def decode_val( encoding, size, io )
       # plain string
@@ -44,7 +54,6 @@ module Gibson
       end
     end
 
-    ##
     # Decode a REPL_KVAL reply.
     def decode_kval( io, size )
       count = io.read_unpacked 4, 'L<'
@@ -62,7 +71,6 @@ module Gibson
       obj
     end
 
-    ##
     # Reply decoding wrapper.
     def decode( code, encoding, size, io )
       if code == Protocol::REPLIES[:val]
@@ -82,7 +90,6 @@ module Gibson
       end
     end
 
-    ##
     # Send a query to the server given its opcode and arguments payload.
     # Return the decoded data, or raise one of the RuntimeErrors defined 
     # inside Gibson::Protocol.
@@ -100,18 +107,10 @@ module Gibson
       decode code, encoding, size, StringIO.new(data)
     end
 
-    ##
-    # This method will be called for every undefined method call
-    # of Gibson::Client mapping the method to its opcode and creating
-    # its argument payload.
-    # For instance a call to:
-    #   client = Gibson::Client.new
-    #   client.set 0, 'foo', 'bar'
-    # Will be executed as:
-    #   client.query Protocol::COMMANDS[:set], '0 foo bar'
-    def method_missing(name, *arguments)
-      if Protocol::COMMANDS.has_key? name 
-        query Protocol::COMMANDS[name], arguments.join(' ')
+    # Map every command => opcode to an instance method. 
+    Protocol::COMMANDS.each do |name,opcode|
+      define_method(name) do |*args|
+        query opcode, args.join(' ')
       end
     end
 

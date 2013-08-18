@@ -31,4 +31,4 @@ g.stats.each do |key,value|
   puts "#{key}: #{value}"
 end
 
-g.close
+g.end
