@@ -81,8 +81,19 @@ module Gibson
     ##
     # Read specified amount of data from the socket.
     def read(n)
-      wait_readable
-      @sock.recv n
+      read = 0
+      data = ""
+
+      while read < n do
+        wait_readable
+
+        left = n - read
+        
+        data += @sock.recv left
+        read = data.size
+      end
+
+      data
     end
   end
 end

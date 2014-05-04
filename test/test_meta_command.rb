@@ -85,9 +85,9 @@ class TestMetaCommand < Test::Unit::TestCase
 
     assert_equal 2, @gibson.inc('test#aab')
 
-    assert_equal Gibson::ENC_PLAIN,  @gibson.meta( 'test#aaa', 'encoding' )
-    assert_equal Gibson::ENC_NUMBER, @gibson.meta( 'test#aab', 'encoding' )
-    assert_equal Gibson::ENC_LZF,    @gibson.meta( 'test#aac', 'encoding' )
+    assert_equal Gibson::Protocol::ENCODINGS[:plain],  @gibson.meta( 'test#aaa', 'encoding' )
+    assert_equal Gibson::Protocol::ENCODINGS[:number], @gibson.meta( 'test#aab', 'encoding' )
+    assert_equal Gibson::Protocol::ENCODINGS[:lzf],    @gibson.meta( 'test#aac', 'encoding' )
   end
 end
 

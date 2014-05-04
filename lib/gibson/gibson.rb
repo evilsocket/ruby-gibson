@@ -98,10 +98,14 @@ module Gibson
       psize  = payload.length
       packet = [ 2 + psize, opcode, payload ].pack( 'L<S<Z' + psize.to_s )
 
-      @connection.write packet
+      wrote = @connection.write packet
 
+      raise( Timeout::Error, "Couldn't complete writing ( wrote #{wrote} of #{packet.size} bytes )" ) unless packet.size == wrote 
+      
       code, encoding, size = @connection.read(7).unpack('S<cL<' )
       data = @connection.read size
+
+      raise( Timeout::Error, "Couldn't complete reading ( read #{data.size} of #{size} bytes )" ) unless data.size == size 
 
       decode code, encoding, size, StringIO.new(data)
     end
