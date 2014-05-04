@@ -19,5 +19,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.summary = %q{High performance Gibson client for Ruby}
+
+  s.add_development_dependency("rake")
 end
 

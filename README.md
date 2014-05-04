@@ -22,23 +22,38 @@ Installation and Usage
 
 You can verify your installation using this piece of code:
 
-    gem install gibson
+```bash
+gem install gibson
+```
 
 And
 
-    require 'gibson'
-    g = Gibson::Client.new
-    g.set 0, 'foo', 'bar'
-    p g.get 'foo'
+```ruby
+require 'gibson'
+g = Gibson::Client.new
+g.set 0, 'foo', 'bar'
+p g.get 'foo'
+```
+
+Tests
+-----
+
+Unit tests are provided inside the `test` folder, to run all of them:
+
+```bash
+rake test
+```
 
 Connection
 ----------
 
 Create a Client object to start working.
 
-    require 'gibson'
+```ruby
+require 'gibson'
 
-    gibson = Gibson::Client.new
+gibson = Gibson::Client.new
+```
 
 The following options can be used in the constructor:
 
@@ -50,11 +65,15 @@ The following options can be used in the constructor:
 
 Tcp connection example:
 
-    gibson = Gibson::Client.new :address => 'localhost'
+```ruby
+gibson = Gibson::Client.new :address => 'localhost'
+```
 
 Custom unix socket connection example with 50ms timeout:
 
-    gibson = Gibson::Client.new :socket => '/tmp/socket', :timeout => 50
+```ruby
+gibson = Gibson::Client.new :socket => '/tmp/socket', :timeout => 50
+```
 
 Runtime Errors
 --------------
@@ -72,33 +91,37 @@ Methods
 
 After connecting, you can start to make requests.
     
-    # will retrieve the 'key' value
-    gibson.get 'key'
+```ruby    
+# will retrieve the 'key' value
+gibson.get 'key'
 
-    # create ( or replace ) a value with a TTL of 3600 seconds.
-    # set the TTL to zero and the value will never expire. 
-    gibson.set 3600, 'key', 'value'
-    
-    # delete a key from cache.
-    gibson.del 'key'
+# create ( or replace ) a value with a TTL of 3600 seconds.
+# set the TTL to zero and the value will never expire. 
+gibson.set 3600, 'key', 'value'
 
-    # will print server stats
-	gibson.stats.each do |name,value|
-        puts "#{name}: #{value}"
-    end
+# delete a key from cache.
+gibson.del 'key'
+
+# will print server stats
+gibson.stats.each do |name,value|
+    puts "#{name}: #{value}"
+end
+```
 
 Every available command is automatically mapped to a client method, so follow the 
-[official reference](http://gibson-db.in/commands.php) of Gibson commands.
+[official reference](http://gibson-db.in/commands.html) of Gibson commands.
 
 Once you're done, close the connection.
 
-	gibson.close
+```ruby
+gibson.close
+```
 
 License
 ---
 
 Released under the BSD license.  
-Copyright &copy; 2013, Simone Margaritelli 
+Copyright &copy; 2014, Simone Margaritelli 
 <evilsocket@gmail.com>  
 
 <http://www.evilsocket.net/>

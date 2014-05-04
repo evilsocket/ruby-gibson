@@ -45,10 +45,9 @@ module Gibson
       # plain string
       if encoding == Protocol::ENCODINGS[:plain]
         io.read_unpacked size, 'Z' + size.to_s
-        # number
+      # number
       elsif encoding == Protocol::ENCODINGS[:number]
-        unpacker = size == 4 ? 'l<' : 'q<'
-        io.read_unpacked size, unpacker
+        io.read_unpacked size, size == 4 ? 'l<' : 'q<'
       else
         raise 'Unknown data encoding.'
       end
