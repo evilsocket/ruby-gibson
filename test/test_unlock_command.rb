@@ -13,7 +13,7 @@ class TestUnlockCommand < Test::Unit::TestCase
       @gibson.set( 0, 'test#foo', 'new' )
     end
 
-    assert_equal true, @gibson.unlcok( 'test#foo' )
+    assert_equal true, @gibson.unlock( 'test#foo' )
 
     assert_equal 'new', @gibson.set( 0, 'test#foo', 'new' )
     assert_equal 'new', @gibson.get( 'test#foo' )
