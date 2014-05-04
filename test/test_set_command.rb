@@ -27,8 +27,14 @@ class TestSetCommand < Test::Unit::TestCase
     ]
 
     values.each do |value|
-      assert_equal value, @gibson.set( 0, 'test#foo', value )
-      assert_equal value, @gibson.get( 'test#foo' )
+      marsh = Marshal.dump(value)
+
+      assert_equal marsh, @gibson.set( 0, 'test#foo', marsh )
+
+      got = @gibson.get('test#foo')
+
+      assert_equal marsh, got
+      assert_equal value, Marshal.load(got)
     end
   end
 
