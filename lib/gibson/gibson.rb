@@ -44,7 +44,7 @@ module Gibson
     def decode_val( encoding, size, io )
       # plain string
       if encoding == Protocol::ENCODINGS[:plain]
-        io.read_unpacked size, 'Z' + size.to_s
+        io.read_unpacked size, 'a' + size.to_s
       # number
       elsif encoding == Protocol::ENCODINGS[:number]
         io.read_unpacked size, size == 4 ? 'l<' : 'q<'
@@ -104,7 +104,7 @@ module Gibson
       
       code, encoding, size = @connection.read(7).unpack('S<cL<' )
       data = @connection.read size
-
+      
       raise( Timeout::Error, "Couldn't complete reading ( read #{data.size} of #{size} bytes )" ) unless data.size == size 
 
       decode code, encoding, size, StringIO.new(data)
