@@ -117,6 +117,23 @@ Once you're done, close the connection.
 gibson.close
 ```
 
+Usage with Rails 3.x and 4.x
+---------------------------
+
+In your Gemfile:
+
+```ruby
+gem 'gibson'
+```
+
+In `config/environments/production.rb`:
+
+```ruby
+config.cache_store = :gibson_store "namespace-of-your-app", { :socket => '/tmp/socket', :timeout => 50 } 
+```
+
+Gibson does not support Rails 2.x.
+
 License
 ---
 
