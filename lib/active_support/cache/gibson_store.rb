@@ -21,29 +21,48 @@ module ActiveSupport
 
       # Deletes all items from the cache.
       def clear(options = nil)
-        @gibson.mdel @namespace + "::"
+        begin
+          @gibson.mdel @namespace + "::"
+        rescue
+          0
+        end
       end
 
       # Increments an already existing integer value that is stored in the cache.
       def increment(name, amount = 1, options = nil)
         key = expand_key(name)
-        amount.times do |v|
-          @gibson.inc key
+
+        begin
+          amount.times do |v|
+            @gibson.inc key
+          end
+        rescue
+
         end
       end
 
       # Decrements an already existing integer value that is stored in the cache.
       def decrement(name, amount = 1, options = nil)
         key = expand_key(name)
-        amount.times do |v|
-          @gibson.dec key
+
+        begin
+          amount.times do |v|
+            @gibson.dec key
+          end
+        rescue
+
         end
       end
 
       # Deletes multiple values by expression
       def delete_matched(matcher, options = nil)
         key = expand_key(matcher)
-        @gibson.mdel key
+
+        begin
+          @gibson.mdel key
+        rescue
+          0
+        end
       end
 
       # Returns some stats
