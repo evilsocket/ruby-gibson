@@ -24,12 +24,16 @@ module Client
       @gibson = Gibson::Client.new OPTIONS
       # make sure the connection is tested and enstablished
       @gibson.ping 
-    rescue Errno::ECONNREFUSED
+    rescue
       puts <<-EOS
 
        Cannot connect to Gibson.
 
-       Make sure Gibson is running on localhost, socket #{OPTIONS[:socket]}.
+       Make sure Gibson is running on localhost, socket #{OPTIONS[:socket]},
+       if you are running the test suite from the "tests" folder of the gibson
+       source release, run:
+
+       sudo ./gibson -c debian/etc/gibson/gibson.conf --daemonize 0 --logfile /dev/stdout --loglevel 0 --gc_ratio 1s --max_mem_cron 1s
 
        To install gibson:
          visit <http://gibson-db.in/>.
