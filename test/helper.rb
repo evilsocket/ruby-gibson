@@ -33,7 +33,7 @@ module Client
        if you are running the test suite from the "tests" folder of the gibson
        source release, run:
 
-       sudo ./gibson -c debian/etc/gibson/gibson.conf --daemonize 0 --logfile /dev/stdout --loglevel 0 --gc_ratio 1s --max_mem_cron 1s
+       sudo ./gibson -c debian/etc/gibson/gibson.conf --daemonize 0 --logfile /dev/stdout --loglevel 0 --gc_ratio 1s --max_mem_cron 1s --expired_cron 1
 
        To install gibson:
          visit <http://gibson-db.in/>.
