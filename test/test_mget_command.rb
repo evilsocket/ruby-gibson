@@ -9,28 +9,44 @@ class TestMGetCommand < Test::Unit::TestCase
     data = {
       'test#foo' => 'bar',
       'test#fuu' => 'bur',
-      'test#fii' => 'bir'	
+      'test#fii' => 'bir'
     }
 
     data.each do |key,value|
       assert_equal @gibson.set( 0, key, value ), value
     end
 
-    assert_equal data, @gibson.mget( 'test#f' ) 
+    assert_equal data, @gibson.mget( 'test#f' )
+  end
+
+  def test_mget_limit
+    data = {
+      'test#foo' => 'bar',
+      'test#fuu' => 'bur',
+      'test#fii' => 'bir'
+    }
+
+    data.each do |key,value|
+      assert_equal @gibson.set( 0, key, value ), value
+    end
+
+    limited = @gibson.mget( 'test#f', 2 )
+
+    assert_equal 2, limited.length
   end
 
   def test_mget_expired
     data = {
       'test#foo' => 'bar',
       'test#fuu' => 'bur',
-      'test#fii' => 'bir'	
+      'test#fii' => 'bir'
     }
 
     data.each do |key,value|
       assert_equal @gibson.set( 1, key, value ), value
     end
-    
-    sleep 1 
+
+    sleep 1
 
     assert_raise Gibson::NotFoundError do
       @gibson.mget( 'test#f' )
@@ -42,17 +58,14 @@ class TestMGetCommand < Test::Unit::TestCase
     data = {
       "test##{binary}#foo" => 'bar',
       "test##{binary}#fuu" => 'bur',
-      "test##{binary}#fii" => 'bir'	
+      "test##{binary}#fii" => 'bir'
     }
-    
+
     data.each do |key,value|
       assert_equal @gibson.set( 1, key, value ), value
     end
 
     assert_equal data, @gibson.mget("test##{binary}#")
   end
+
 end
-
-
-
-
